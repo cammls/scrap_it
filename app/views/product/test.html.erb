@@ -1,0 +1,10 @@
+<div class="jumbotron">
+        <h1>Scrap your products</h1>
+        <p class="lead">Using the Diffbot's product API technology, Scrap it! allows you to automatically scrap your company's products and save them in our database.
+         </p>
+      </div>
+<%= form_tag do -%>
+<%= label_tag 'url', "Type or paste the URL of the product you would like to scrap:"%> <br>
+<%= url_field(:product, :url) %>
+ <%= submit_tag("Submit",class: "btn btn-primary") %>
+<% end -%>

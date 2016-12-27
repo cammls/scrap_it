@@ -1,0 +1,26 @@
+
+<div class="page-header">
+<h1>Products Scrapped</h1>
+</div>
+
+<table class="table table-hover">
+<thead class="thead-inverse">
+    <tr>
+      <th>Id</th>
+      <th>Title</th>
+      <th>Show</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <% @products.each do |product| %>
+    <tr>
+      <td><%= product.id %></td>
+      <td><%= product.title %></td>
+        <td><%= link_to 'Show', { action: "show", id: product.id },
+                                method: :get %></td>
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>
