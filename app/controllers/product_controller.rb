@@ -22,11 +22,9 @@ class ProductController < ApplicationController
       redirect_to action: "show", id: @product.id
     else
       flash[:danger]= 'An error occurred.'
+      redirect_to '/'
     end
   end
-
-    # puts res.body if res.is_a?(Net::HTTPSuccess)
-    # @params = params.require(:product).permit(:url)
   end
 
   def show
