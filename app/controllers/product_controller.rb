@@ -4,28 +4,29 @@ class ProductController < ApplicationController
   def test
     # if a link is submitted
     if params[:product]
-    url = params[:product][:url]
-    uri = URI('https://api.diffbot.com/v3/product')
-    params = { :token => "a20ec1a881592d4fb793e3d2a7432d35",
-      :url => url,
-    :discussion => "false" }
-    uri.query = URI.encode_www_form(params)
-    res = Net::HTTP.get_response(uri)
-    @json = JSON.parse(res.body)
-
-    @product= Product.new(title: @json["objects"].first["title"],
-    price: @json["objects"].first["offerPrice"],url: @json["objects"].first["pageUrl"],
-    brand: @json["objects"].first["brand"], product_id: @json["objects"].first["productId"],
-    category: @json["objects"].first["inferredCategory_beta"])
-    if @product.save
-      flash[:success] = 'Product scrapped!'
-      redirect_to action: "show", id: @product.id
-    else
-      flash[:danger]= 'An error occurred.'
-      redirect_to '/'
+      url = params[:product][:url]
+      uri = URI('https://api.diffbot.com/v3/product')
+      params = { :token => "a20ec1a881592d4fb793e3d2a7432d35",
+        :url => url,
+        :discussion => "false" }
+        uri.query = URI.encode_www_form(params)
+        res = Net::HTTP.get_response(uri)
+        @json = JSON.parse(res.body)
+        if @json["objects"] == nil
+          flash[:danger]= 'An error occurred.'
+          redirect_to '/'
+        else
+          @product= Product.new(title: @json["objects"].first["title"],json: @json["objects"].first)
+          if @product.save
+            flash[:success] = 'Product scrapped!'
+            redirect_to action: "show", id: @product.id
+          else
+            flash[:danger]= 'An error occurred.'
+            redirect_to '/'
+          end
+        end
+      end
     end
-  end
-  end
 
   def show
       @product = Product.find(params[:id])
